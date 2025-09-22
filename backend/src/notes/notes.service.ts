@@ -6,6 +6,7 @@ import {
 import { CreateNoteDto, UpdateNoteDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Note, Prisma } from '@prisma/client';
+import { nigeriaHolidays } from '../../prisma/holidays';
 
 @Injectable()
 export class NotesService {
@@ -13,6 +14,7 @@ export class NotesService {
 
   async create(dto: CreateNoteDto): Promise<Note> {
     this.validateInauspiciousDate(dto.date);
+    this.validateHolidayDate(dto.date);
 
     return await this.prisma.note.create({
       data: {
@@ -45,6 +47,7 @@ export class NotesService {
   async update(id: number, dto: UpdateNoteDto): Promise<Note> {
     if (dto.date) {
       this.validateInauspiciousDate(dto.date);
+      this.validateHolidayDate(dto.date);
     }
 
     const updateData: Prisma.NoteUpdateInput = { ...dto };
@@ -62,6 +65,32 @@ export class NotesService {
     return await this.prisma.note.delete({
       where: { id },
     });
+  }
+
+  private validateHolidayDate(dateString: string): void {
+    const inputDate = new Date(dateString);
+
+    const normalizedInputDate = new Date(
+      inputDate.getFullYear(),
+      inputDate.getMonth(),
+      inputDate.getDate(),
+    );
+
+    const holiday = nigeriaHolidays.find((holiday) => {
+      const normalizedHolidayDate = new Date(
+        holiday.date.getFullYear(),
+        holiday.date.getMonth(),
+        holiday.date.getDate(),
+      );
+
+      return normalizedHolidayDate.getTime() === normalizedInputDate.getTime();
+    });
+
+    if (holiday) {
+      throw new BadRequestException(
+        `The date "${dateString}" is a Nigerian national holiday (${holiday.name}). Notes cannot be scheduled on days of celebration.`,
+      );
+    }
   }
 
   private validateInauspiciousDate(dateString: string): void {
