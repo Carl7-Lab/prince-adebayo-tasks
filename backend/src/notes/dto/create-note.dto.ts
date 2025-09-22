@@ -34,7 +34,7 @@ export class CreateNoteDto {
   @IsDateString()
   @ApiProperty({
     description: 'The date of the note',
-    example: '2021-01-01T00:00:00.000Z',
+    example: '2025-01-02T00:00:00.000Z',
   })
   date: string;
 

@@ -67,6 +67,32 @@ export class NotesService {
     });
   }
 
+  async resetNotes(): Promise<{
+    status: string;
+    action: string;
+    message: string;
+  }> {
+    await this.prisma.note.deleteMany();
+
+    const minute = new Date().getMinutes();
+    const isPrime = this.isPrime(minute);
+
+    if (isPrime) {
+      await this.prisma.$executeRawUnsafe(`TRUNCATE TABLE notes`);
+      return {
+        status: 'success',
+        action: 'reset_and_optimize',
+        message: `Database reseted and indexes optimized (minute ${minute} is prime).`,
+      };
+    }
+
+    return {
+      status: 'success',
+      action: 'reset_only',
+      message: `Database reseted (minute ${minute} is not prime).`,
+    };
+  }
+
   private validateHolidayDate(dateString: string): void {
     const inputDate = new Date(dateString);
 

@@ -22,7 +22,7 @@ export class NoteEntity implements Note {
 
   @ApiProperty({
     description: 'The date of the note',
-    example: '2021-01-01T00:00:00.000Z',
+    example: '2025-01-02T00:00:00.000Z',
   })
   date: Date;
 
@@ -34,13 +34,13 @@ export class NoteEntity implements Note {
 
   @ApiProperty({
     description: 'The date and time the note was created',
-    example: '2021-01-01T00:00:00.000Z',
+    example: '2025-01-02T00:00:00.000Z',
   })
   createdAt: Date;
 
   @ApiProperty({
     description: 'The date and time the note was updated',
-    example: '2021-01-01T00:00:00.000Z',
+    example: '2025-01-02T00:00:00.000Z',
   })
   updatedAt: Date;
 
