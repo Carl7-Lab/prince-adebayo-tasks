@@ -28,7 +28,6 @@ async function bootstrap(): Promise<void> {
       'A prestigious digital task manager for His Royal Highness, Prince Adebayo of Nigeria. Manage royal decrees and tasks with sophisticated business logic including inauspicious date detection, palindrome curse handling, and automatic resets.',
     )
     .setVersion('1.0.0')
-    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

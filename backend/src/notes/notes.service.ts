@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateNoteDto, UpdateNoteDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Note, Prisma } from '@prisma/client';
@@ -8,6 +12,8 @@ export class NotesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateNoteDto): Promise<Note> {
+    this.validateInauspiciousDate(dto.date);
+
     return await this.prisma.note.create({
       data: {
         ...dto,
@@ -37,52 +43,53 @@ export class NotesService {
   }
 
   async update(id: number, dto: UpdateNoteDto): Promise<Note> {
-    try {
-      const updateData: any = { ...dto };
-      if (dto.date) {
-        updateData.date = new Date(dto.date);
-      }
-
-      return await this.prisma.note.update({
-        where: { id },
-        data: updateData,
-      });
-    } catch (error) {
-      throw this.handlePrismaNotFoundError(
-        error as Prisma.PrismaClientKnownRequestError,
-        id,
-        'update',
-      );
+    if (dto.date) {
+      this.validateInauspiciousDate(dto.date);
     }
+
+    const updateData: Prisma.NoteUpdateInput = { ...dto };
+    if (dto.date) {
+      updateData.date = new Date(dto.date);
+    }
+
+    return await this.prisma.note.update({
+      where: { id },
+      data: updateData,
+    });
   }
 
   async remove(id: number): Promise<Note> {
-    try {
-      return await this.prisma.note.delete({
-        where: { id },
-      });
-    } catch (error) {
-      throw this.handlePrismaNotFoundError(
-        error as Prisma.PrismaClientKnownRequestError,
-        id,
-        'delete',
+    return await this.prisma.note.delete({
+      where: { id },
+    });
+  }
+
+  private validateInauspiciousDate(dateString: string): void {
+    const digitSum = this.calculateDigitSum(dateString);
+
+    if (this.isPrime(digitSum)) {
+      throw new BadRequestException(
+        `The date "${dateString}" is inauspicious. The sum of its digits (${digitSum}) is a prime number, which brings bad luck according to the Royal Numerologist.`,
       );
     }
   }
 
-  private handlePrismaNotFoundError(
-    error: Prisma.PrismaClientKnownRequestError,
-    id: number,
-    operation: string,
-  ): NotFoundException | Error {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2025'
-    ) {
-      return new NotFoundException(
-        `Note with id "${id}" not found or you don't have permission to ${operation} it`,
-      );
+  private calculateDigitSum(dateString: string): number {
+    return dateString
+      .replace(/[^0-9]/g, '')
+      .split('')
+      .reduce((sum, digit) => sum + parseInt(digit, 10), 0);
+  }
+
+  private isPrime(num: number): boolean {
+    if (num < 2) return false;
+    if (num === 2) return true;
+    if (num % 2 === 0) return false;
+
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+      if (num % i === 0) return false;
     }
-    return error;
+
+    return true;
   }
 }
