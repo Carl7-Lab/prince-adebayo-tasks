@@ -1,0 +1,10 @@
+<div class="fixed top-0 left-0 right-0 px-2 py-3 bg-slate-900 shadow-md w-full flex justify-center">
+  <nav class="w-full max-w-7xl flex justify-between">
+    <a [routerLink]="navigationItems.NOTES.path" class="text-white font-bold">{{
+      navigationItems.NOTES.label
+    }}</a>
+    <a [routerLink]="navigationItems.CREATE_NOTE.path" class="text-white font-bold">{{
+      navigationItems.CREATE_NOTE.label
+    }}</a>
+  </nav>
+</div>
