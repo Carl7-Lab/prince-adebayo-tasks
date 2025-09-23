@@ -1,22 +1,25 @@
 <div
-  class="fixed top-0 left-0 right-0 px-2 py-3 shadow-md w-full flex justify-center"
+  class="fixed top-0 left-0 right-0 z-50 px-2 py-3 shadow-md w-full flex justify-center"
   style="
     background: linear-gradient(135deg, #008751 0%, #006b42 100%);
     box-shadow: 0 4px 15px rgba(0, 135, 81, 0.3);
   "
 >
   <nav class="w-full max-w-7xl flex justify-between items-center">
-    <div class="nigerian-navbar-brand">Prince Adebayo's</div>
-    <div class="flex space-x-6">
+    <div class="nigerian-navbar-brand">
       <a
-        [routerLink]="navigationPaths.NOTES"
-        class="nigerian-navbar-link"
+        [routerLink]="navigationPaths.NOTES_LIST"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nigerian-navbar-brand"
         routerLinkActive="active"
       >
-        Notes
+        Prince Adebayo's
       </a>
+    </div>
+    <div class="flex space-x-6">
       <a
-        [routerLink]="navigationPaths.CREATE_NOTE"
+        [routerLink]="navigationPaths.NOTES_CREATE"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nigerian-navbar-link"
         routerLinkActive="active"
       >

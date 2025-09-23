@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { NAVIGATION_PATHS } from '../../constants/navigation-paths';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FULL_NAVIGATION_PATHS } from '../../constants/navigation-paths';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  navigationPaths = NAVIGATION_PATHS;
+  navigationPaths = FULL_NAVIGATION_PATHS;
 }

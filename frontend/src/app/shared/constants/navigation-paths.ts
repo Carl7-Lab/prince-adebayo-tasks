@@ -1,4 +1,11 @@
 export const NAVIGATION_PATHS = {
-  NOTES: 'notes-list',
-  CREATE_NOTE: 'create-note',
-} as const;
+  NOTES: 'notes',
+  NOTES_CREATE: 'create',
+  NOTES_UPDATE: 'update/:id',
+};
+
+export const FULL_NAVIGATION_PATHS = {
+  NOTES_LIST: `/${NAVIGATION_PATHS.NOTES}`,
+  NOTES_CREATE: `/${NAVIGATION_PATHS.NOTES}/${NAVIGATION_PATHS.NOTES_CREATE}`,
+  NOTES_UPDATE: `/${NAVIGATION_PATHS.NOTES}/${NAVIGATION_PATHS.NOTES_UPDATE.replace(':id', '')}`,
+};

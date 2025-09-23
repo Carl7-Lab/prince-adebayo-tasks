@@ -1,0 +1,39 @@
+<div class="container mx-auto px-4 py-8 flex flex-row gap-4">
+  <router-outlet />
+
+  <div class="text-center mb-8 flex-1 px-4 py-8">
+    <h1 class="nigerian-title">A Royal To-Do List</h1>
+    <div class="nigerian-flag-stripe"></div>
+    <p class="nigerian-body mt-4">His Royal Highness Prince Adebayo's Personal Task Manager</p>
+
+    <section>
+      <h2 class="nigerian-heading text-center mb-8">Royal Decrees</h2>
+
+      <div class="grid gap-4">
+        @for (note of notes; track note.id) {
+        <div class="card">
+          <div class="flex justify-between items-start gap-2">
+            <div>
+              <h3 class="nigerian-heading">{{ note.title }}</h3>
+              <p class="nigerian-body">{{ note.content }}</p>
+              <div class="flex items-center space-x-4 mt-2">
+                <span class="nigerian-label text-sm">Date: {{ note.date }}</span>
+                <span class="nigerian-label text-sm">Priority: {{ note.priority }}</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button
+                class="btn-secondary-icon text-sm"
+                [routerLink]="navigationPaths.NOTES_UPDATE + note.id"
+              >
+                Edit
+              </button>
+              <button class="btn-danger-icon text-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

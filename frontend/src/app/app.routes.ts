@@ -9,14 +9,20 @@ export const routes: Routes = [
   },
   {
     path: NAVIGATION_PATHS.NOTES,
-    loadComponent: () => import('./pages/notes-list/notes-list'),
-  },
-  {
-    path: NAVIGATION_PATHS.CREATE_NOTE,
-    loadComponent: () => import('./pages/create-note/create-note'),
+    loadComponent: () => import('./notes/pages/notes-list/notes-list'),
+    children: [
+      {
+        path: NAVIGATION_PATHS.NOTES_CREATE,
+        loadComponent: () => import('./notes/pages/create-note/create-note'),
+      },
+      {
+        path: NAVIGATION_PATHS.NOTES_UPDATE,
+        loadComponent: () => import('./notes/pages/update-note/update-note'),
+      },
+    ],
   },
   {
     path: '**',
-    loadComponent: () => import('./pages/not-found/not-found'),
+    loadComponent: () => import('./not-found/not-found'),
   },
 ];
