@@ -9,7 +9,7 @@ export const routes: Routes = [
   },
   {
     path: NAVIGATION_PATHS.NOTES,
-    loadComponent: () => import('./pages/notes/notes'),
+    loadComponent: () => import('./pages/notes-list/notes-list'),
   },
   {
     path: NAVIGATION_PATHS.CREATE_NOTE,

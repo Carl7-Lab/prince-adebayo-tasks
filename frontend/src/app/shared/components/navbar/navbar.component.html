@@ -1,10 +1,27 @@
-<div class="fixed top-0 left-0 right-0 px-2 py-3 bg-slate-900 shadow-md w-full flex justify-center">
-  <nav class="w-full max-w-7xl flex justify-between">
-    <a [routerLink]="navigationItems.NOTES.path" class="text-white font-bold">{{
-      navigationItems.NOTES.label
-    }}</a>
-    <a [routerLink]="navigationItems.CREATE_NOTE.path" class="text-white font-bold">{{
-      navigationItems.CREATE_NOTE.label
-    }}</a>
+<div
+  class="fixed top-0 left-0 right-0 px-2 py-3 shadow-md w-full flex justify-center"
+  style="
+    background: linear-gradient(135deg, #008751 0%, #006b42 100%);
+    box-shadow: 0 4px 15px rgba(0, 135, 81, 0.3);
+  "
+>
+  <nav class="w-full max-w-7xl flex justify-between items-center">
+    <div class="nigerian-navbar-brand">Prince Adebayo's</div>
+    <div class="flex space-x-6">
+      <a
+        [routerLink]="navigationPaths.NOTES"
+        class="nigerian-navbar-link"
+        routerLinkActive="active"
+      >
+        Notes
+      </a>
+      <a
+        [routerLink]="navigationPaths.CREATE_NOTE"
+        class="nigerian-navbar-link"
+        routerLinkActive="active"
+      >
+        Create Note
+      </a>
+    </div>
   </nav>
 </div>

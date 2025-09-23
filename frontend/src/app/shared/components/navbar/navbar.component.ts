@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NAVIGATION_ITEMS } from '../../constants/navigation-paths';
+import { NAVIGATION_PATHS } from '../../constants/navigation-paths';
 
 @Component({
   selector: 'app-navbar',
@@ -10,5 +10,5 @@ import { NAVIGATION_ITEMS } from '../../constants/navigation-paths';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  navigationItems = NAVIGATION_ITEMS;
+  navigationPaths = NAVIGATION_PATHS;
 }
