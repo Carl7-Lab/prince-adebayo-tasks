@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8 flex flex-row gap-4">
+<div class="container mx-auto px-4 py-0 flex flex-col md:flex-row gap-x-4">
   <router-outlet />
 
   <div class="text-center mb-8 flex-1 px-4 py-8">
@@ -10,7 +10,7 @@
       <h2 class="nigerian-heading text-center mb-8">Royal Decrees</h2>
 
       <div class="grid gap-4">
-        @for (note of notes; track note.id) {
+        @for (note of notesService.notes(); track note.id) {
         <div class="card">
           <div class="flex justify-between items-start gap-2">
             <div>
@@ -24,7 +24,7 @@
             <div class="flex space-x-2">
               <button
                 class="btn-secondary-icon text-sm"
-                [routerLink]="navigationPaths.NOTES_UPDATE + note.id"
+                [routerLink]="[navigationPaths.NOTES_UPDATE + note.id]"
               >
                 Edit
               </button>

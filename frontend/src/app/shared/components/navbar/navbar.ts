@@ -6,7 +6,7 @@ import { FULL_NAVIGATION_PATHS } from '../../constants/navigation-paths';
   selector: 'app-navbar',
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './navbar.component.html',
+  templateUrl: './navbar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
