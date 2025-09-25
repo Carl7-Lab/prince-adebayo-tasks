@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DateFormatter } from '../../utils/date-formatter';
 import { FULL_NAVIGATION_PATHS } from '../../shared/constants/navigation-paths';
+import { Note } from '../interfaces/notes';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class NoteFormService {
     }
   }
 
-  onSubmit(form: FormGroup, submitCallback: (formData: any) => void): void {
+  onSubmit(form: FormGroup, submitCallback: (formData: Note) => void): void {
     if (form.invalid) {
       form.markAllAsTouched();
       return;

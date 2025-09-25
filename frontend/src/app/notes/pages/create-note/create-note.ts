@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FULL_NAVIGATION_PATHS } from '../../../shared/constants/navigation-paths';
 import { FormGroup } from '@angular/forms';
 import { NotesService } from '../../services/notes';
@@ -13,6 +13,7 @@ import { NoteFormComponent } from '../../components/note-form/note-form';
       [pageTitle]="'Create Royal Decree'"
       [pageSubtitle]="'Issue a new royal decree for your kingdom'"
       [submitButtonText]="'Issue Royal Decree'"
+      [isSubmitBlocked]="isSubmitBlocked()"
       [cancelRoute]="notes_list"
       (formSubmit)="onSubmit()"
     />
@@ -25,12 +26,19 @@ export default class CreateNote {
   private notesService = inject(NotesService);
   private noteFormService = inject(NoteFormService);
 
+  isSubmitBlocked = signal(false);
+
   myForm: FormGroup = this.noteFormService.createForm();
 
   onSubmit() {
+    if (this.isSubmitBlocked()) {
+      return;
+    }
+
     this.noteFormService.onSubmit(this.myForm, (formData) => {
-      this.notesService.create(formData);
-      this.noteFormService.navigateToNotesList();
+      this.notesService.create(formData, () => {
+        this.noteFormService.navigateToNotesList();
+      });
     });
   }
 }

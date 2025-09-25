@@ -15,12 +15,16 @@ export class NoteFormComponent {
   pageSubtitle = input.required<string>();
   submitButtonText = input.required<string>();
   cancelRoute = input.required<string>();
+  isSubmitBlocked = input<boolean>(false);
 
   formSubmit = output<void>();
 
   formUtils = FormUtils;
 
   onSubmit() {
+    if (this.isSubmitBlocked()) {
+      return;
+    }
     this.formSubmit.emit();
   }
 }

@@ -80,17 +80,24 @@ export class NotesService {
     );
   }
 
-  delete(id: number): void {
+  delete(id: number, onSuccess?: () => void): void {
     this.httpService.executeRequest(
       'Deleting decree',
       this.http.delete<Note>(`${environment.apiUrl}/notes/${id}`),
       () => {
-        this.notes.set(this.notes().filter((n) => n.id !== id));
+        const currentNotes = this.notes();
+        const filteredNotes = currentNotes.filter((n) => n.id !== Number(id));
+
+        this.notes.set(filteredNotes);
 
         this.httpService.showSuccess(
           'Decree deleted',
           'Your decree has been deleted successfully.'
         );
+
+        if (onSuccess) {
+          onSuccess();
+        }
       }
     );
   }

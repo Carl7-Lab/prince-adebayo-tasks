@@ -100,7 +100,15 @@
 
         <div class="flex justify-center space-x-4">
           <button type="button" class="btn-secondary" [routerLink]="cancelRoute()">Cancel</button>
-          <button type="submit" class="btn-primary nigerian-glow">{{ submitButtonText() }}</button>
+          <button
+            type="submit"
+            class="btn-primary nigerian-glow"
+            [disabled]="isSubmitBlocked()"
+            [class.opacity-50]="isSubmitBlocked()"
+            [class.cursor-not-allowed]="isSubmitBlocked()"
+          >
+            {{ isSubmitBlocked() ? 'Processing...' : submitButtonText() }}
+          </button>
         </div>
       </form>
     </div>

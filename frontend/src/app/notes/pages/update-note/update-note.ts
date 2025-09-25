@@ -5,6 +5,7 @@ import {
   OnInit,
   OnDestroy,
   effect,
+  signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FULL_NAVIGATION_PATHS } from '../../../shared/constants/navigation-paths';
@@ -13,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { NotesService } from '../../services/notes';
 import { NoteFormService } from '../../services/note-form.service';
 import { NoteFormComponent } from '../../components/note-form/note-form';
+import { ToastService } from 'src/app/shared/services/toast.service';
 
 @Component({
   imports: [NoteFormComponent],
@@ -23,6 +25,7 @@ import { NoteFormComponent } from '../../components/note-form/note-form';
       [pageSubtitle]="'Update a royal decree for your kingdom'"
       [submitButtonText]="'Update Royal Decree'"
       [cancelRoute]="notes_list"
+      [isSubmitBlocked]="isSubmitBlocked()"
       (formSubmit)="onSubmit()"
     />
   `,
@@ -33,11 +36,14 @@ export default class UpdateNote implements OnInit, OnDestroy {
 
   private notesService = inject(NotesService);
   private noteFormService = inject(NoteFormService);
+  private toastService = inject(ToastService);
   private route = inject(ActivatedRoute);
 
   note = this.notesService.note;
   noteError = this.notesService.error;
   noteId: number | null = null;
+
+  isSubmitBlocked = signal(false);
 
   private routeSubscription?: Subscription;
 
@@ -77,11 +83,25 @@ export default class UpdateNote implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    if (this.isSubmitBlocked()) {
+      return;
+    }
+
     this.noteFormService.onSubmit(this.myForm, (formData) => {
-      if (this.noteId) {
-        this.notesService.update(+this.noteId, formData);
-        this.noteFormService.navigateToNotesList();
-      }
+      this.notesService.update(+this.noteId!, formData, () => {
+        if (
+          formData.title.toLowerCase() === formData.title.toLowerCase().split('').reverse().join('')
+        ) {
+          this.toastService.showAlert('The Palindrome Curse', 'Proceeding with deletion');
+          setTimeout(() => {
+            this.notesService.delete(+this.noteId!, () => {
+              this.noteFormService.navigateToNotesList();
+            });
+          }, 2000);
+        } else {
+          this.noteFormService.navigateToNotesList();
+        }
+      });
     });
   }
 }
