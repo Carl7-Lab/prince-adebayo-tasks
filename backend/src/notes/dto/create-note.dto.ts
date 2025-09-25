@@ -24,7 +24,7 @@ export class CreateNoteDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(10)
-  @MaxLength(500)
+  @MaxLength(250)
   @ApiProperty({
     description: 'The content of the note',
     example: 'This is the content of my first note',

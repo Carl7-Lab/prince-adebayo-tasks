@@ -13,6 +13,7 @@
   --nigerian-green: #008751;
   --nigerian-white: #ffffff;
   --nigerian-text: #2c2c2c;
+  --nigerian-placeholder: #999999;
   --nigerian-shadow: rgba(0, 135, 81, 0.3);
   --nigerian-light-bg: #f8f9fa;
   --nigerian-red: #ff0000;
@@ -141,71 +142,6 @@
   box-shadow: 0 4px 12px var(--nigerian-shadow);
 }
 
-/* NIGERIAN FLAG THEME - DARK MODE */
-.nigerian-dark {
-  --nigerian-green: #00a85a;
-  --nigerian-white: #1a1a1a;
-  --nigerian-text: #e8e8e8;
-  --nigerian-shadow: rgba(0, 168, 90, 0.4);
-  --nigerian-dark-bg: #2d2d2d;
-}
-
-.nigerian-dark {
-  background: linear-gradient(135deg, var(--nigerian-white) 0%, var(--nigerian-dark-bg) 100%);
-  color: var(--nigerian-text);
-  min-height: 100vh;
-}
-
-.nigerian-dark .card {
-  background: linear-gradient(135deg, var(--nigerian-dark-bg) 0%, var(--nigerian-white) 100%);
-  border: 2px solid var(--nigerian-green);
-  box-shadow: 0 4px 15px var(--nigerian-shadow);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  transition: all 0.3s ease;
-}
-
-.nigerian-dark .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px var(--nigerian-shadow);
-}
-
-.nigerian-dark .btn-primary {
-  background: var(--nigerian-green);
-  color: white;
-  border: none;
-  box-shadow: 0 2px 8px var(--nigerian-shadow);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.nigerian-dark .btn-primary:hover {
-  background: #00d46a;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--nigerian-shadow);
-}
-
-.nigerian-dark .btn-secondary {
-  background: transparent;
-  color: var(--nigerian-green);
-  border: 2px solid var(--nigerian-green);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.nigerian-dark .btn-secondary:hover {
-  background: var(--nigerian-green);
-  color: white;
-  transform: translateY(-1px);
-}
-
 /* ===== UTILITY CLASSES ===== */
 .theme-transition {
   transition: all 0.3s ease-in-out;
@@ -252,6 +188,13 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.nigerian-text-danger {
+  font-family: var(--font-classic);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--nigerian-red);
+}
+
 /* ===== NIGERIAN FORM ELEMENTS ===== */
 .nigerian-input {
   font-family: var(--font-classic);
@@ -268,6 +211,10 @@
   outline: none;
   border-color: var(--nigerian-green);
   box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+}
+
+.nigerian-input::placeholder {
+  color: var(--nigerian-placeholder);
 }
 
 .nigerian-label {
@@ -288,7 +235,7 @@
   background: white;
   color: var(--nigerian-text);
   resize: vertical;
-  min-height: 100px;
+  min-height: 50px;
   transition: all 0.3s ease;
 }
 
@@ -296,6 +243,10 @@
   outline: none;
   border-color: var(--nigerian-green);
   box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+}
+
+.nigerian-textarea::placeholder {
+  color: var(--nigerian-placeholder);
 }
 
 /* ===== NIGERIAN NAVIGATION ===== */

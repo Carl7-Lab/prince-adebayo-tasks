@@ -5,11 +5,3 @@ export interface Note {
   date: Date;
   priority: number;
 }
-
-export interface NoteDto {
-  id: number | null;
-  title: string;
-  content: string;
-  date: Date;
-  priority: number;
-}

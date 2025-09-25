@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { FULL_NAVIGATION_PATHS } from '../shared/constants/navigation-paths';
 
 @Component({
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './not-found.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

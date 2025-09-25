@@ -4,11 +4,11 @@ import { FULL_NAVIGATION_PATHS } from '../../constants/navigation-paths';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  navigationPaths = FULL_NAVIGATION_PATHS;
+  notes_list = FULL_NAVIGATION_PATHS.NOTES_LIST;
+  note_create = FULL_NAVIGATION_PATHS.NOTES_CREATE;
 }

@@ -9,17 +9,22 @@
     <div class="card">
       <h2 class="nigerian-subtitle mb-6">Royal Decree Form</h2>
 
-      <form class="space-y-6">
+      <form class="space-y-6" [formGroup]="myForm" (ngSubmit)="onSubmit()">
         <div>
           <label for="title" class="nigerian-label">Decree Title</label>
           <input
             type="text"
             id="title"
             name="title"
+            formControlName="title"
             class="nigerian-input w-full"
             placeholder="Enter the title of your royal decree"
             required
           />
+
+          @if (formUtils.isValidField(myForm, 'title')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'title') }}</span>
+          }
         </div>
 
         <div>
@@ -27,29 +32,57 @@
           <textarea
             id="content"
             name="content"
+            formControlName="content"
             class="nigerian-textarea w-full"
             placeholder="Describe the details of your royal decree"
-            rows="6"
+            rows="3"
             required
           ></textarea>
+
+          @if (formUtils.isValidField(myForm, 'content')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'content') }}</span>
+          }
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="date" class="nigerian-label">Effective Date</label>
-            <input type="date" id="date" name="date" class="nigerian-input w-full" required />
+            <input
+              type="date"
+              id="date"
+              name="date"
+              formControlName="date"
+              class="nigerian-input w-full"
+              required
+            />
+
+            @if (formUtils.isValidField(myForm, 'date')) {
+            <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'date') }}</span>
+            }
           </div>
 
           <div>
             <label for="priority" class="nigerian-label">Priority Level</label>
-            <select id="priority" name="priority" class="nigerian-input w-full" required>
+            <select
+              id="priority"
+              name="priority"
+              formControlName="priority"
+              class="nigerian-input w-full"
+              required
+            >
               <option value="">Select Priority</option>
-              <option value="1">1 - Highest Priority (Urgent Royal Matter)</option>
-              <option value="2">2 - High Priority (Important Royal Business)</option>
+              <option value="5">5 - Highest Priority (Urgent Royal Matter)</option>
+              <option value="4">4 - High Priority (Important Royal Business)</option>
               <option value="3">3 - Medium Priority (Standard Royal Affairs)</option>
-              <option value="4">4 - Low Priority (Minor Royal Tasks)</option>
-              <option value="5">5 - Lowest Priority (Leisure Royal Activities)</option>
+              <option value="2">2 - Low Priority (Minor Royal Tasks)</option>
+              <option value="1">1 - Lowest Priority (Leisure Royal Activities)</option>
             </select>
+
+            @if (formUtils.isValidField(myForm, 'priority')) {
+            <span class="nigerian-text-danger">{{
+              formUtils.getFieldError(myForm, 'priority')
+            }}</span>
+            }
           </div>
         </div>
 
@@ -66,9 +99,7 @@
         </div>
 
         <div class="flex justify-center space-x-4">
-          <button type="button" class="btn-secondary" [routerLink]="navigationPaths.NOTES_LIST">
-            Cancel
-          </button>
+          <button type="button" class="btn-secondary" [routerLink]="notes_list">Cancel</button>
           <button type="submit" class="btn-primary nigerian-glow">Update Royal Decree</button>
         </div>
       </form>
