@@ -23,10 +23,6 @@ export class HttpService {
 
     if (error.status === 400) {
       errorMessage = 'Bad request';
-    } else if (error.status === 401) {
-      errorMessage = 'Unauthorized';
-    } else if (error.status === 403) {
-      errorMessage = 'Forbidden';
     } else if (error.status === 404) {
       errorMessage = 'Not found';
     } else if (error.status === 0) {

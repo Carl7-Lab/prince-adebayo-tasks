@@ -1,15 +1,15 @@
 <div class="container mx-auto px-4 py-8">
   <div class="text-center mb-8">
-    <h1 class="nigerian-title">Create Royal Decree</h1>
+    <h1 class="nigerian-title">{{ pageTitle() }}</h1>
     <div class="nigerian-flag-stripe"></div>
-    <p class="nigerian-body mt-4">Issue a new royal decree for your kingdom</p>
+    <p class="nigerian-body mt-4">{{ pageSubtitle() }}</p>
   </div>
 
   <section class="max-w-2xl mx-auto">
     <div class="card">
       <h2 class="nigerian-subtitle mb-6">Royal Decree Form</h2>
 
-      <form class="space-y-6" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <form class="space-y-6" [formGroup]="form()" (ngSubmit)="onSubmit()">
         <div>
           <label for="title" class="nigerian-label">Decree Title</label>
           <input
@@ -22,8 +22,8 @@
             required
           />
 
-          @if (formUtils.isValidField(myForm, 'title')) {
-          <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'title') }}</span>
+          @if (formUtils.isValidField(form(), 'title')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'title') }}</span>
           }
         </div>
 
@@ -39,8 +39,8 @@
             required
           ></textarea>
 
-          @if (formUtils.isValidField(myForm, 'content')) {
-          <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'content') }}</span>
+          @if (formUtils.isValidField(form(), 'content')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'content') }}</span>
           }
         </div>
 
@@ -56,8 +56,8 @@
               required
             />
 
-            @if (formUtils.isValidField(myForm, 'date')) {
-            <span class="nigerian-text-danger">{{ formUtils.getFieldError(myForm, 'date') }}</span>
+            @if (formUtils.isValidField(form(), 'date')) {
+            <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'date') }}</span>
             }
           </div>
 
@@ -78,9 +78,9 @@
               <option value="1">1 - Lowest Priority (Leisure Royal Activities)</option>
             </select>
 
-            @if (formUtils.isValidField(myForm, 'priority')) {
+            @if (formUtils.isValidField(form(), 'priority')) {
             <span class="nigerian-text-danger">{{
-              formUtils.getFieldError(myForm, 'priority')
+              formUtils.getFieldError(form(), 'priority')
             }}</span>
             }
           </div>
@@ -99,8 +99,8 @@
         </div>
 
         <div class="flex justify-center space-x-4">
-          <button type="button" class="btn-secondary" [routerLink]="notes_list">Cancel</button>
-          <button type="submit" class="btn-primary nigerian-glow">Issue Royal Decree</button>
+          <button type="button" class="btn-secondary" [routerLink]="cancelRoute()">Cancel</button>
+          <button type="submit" class="btn-primary nigerian-glow">{{ submitButtonText() }}</button>
         </div>
       </form>
     </div>

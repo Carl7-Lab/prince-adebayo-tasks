@@ -6,42 +6,48 @@ import {
   OnDestroy,
   effect,
 } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FULL_NAVIGATION_PATHS } from '../../../shared/constants/navigation-paths';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormUtils } from 'src/app/utils/form-utils';
-import { DateFormatter } from 'src/app/utils/date-formatter';
+import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NotesService } from '../../services/notes';
+import { NoteFormService } from '../../services/note-form.service';
+import { NoteFormComponent } from '../../components/note-form/note-form';
 
 @Component({
-  imports: [RouterLink, ReactiveFormsModule],
-  templateUrl: './update-note.html',
+  imports: [NoteFormComponent],
+  template: `
+    <note-form
+      [form]="myForm"
+      [pageTitle]="'Update Royal Decree'"
+      [pageSubtitle]="'Update a royal decree for your kingdom'"
+      [submitButtonText]="'Update Royal Decree'"
+      [cancelRoute]="notes_list"
+      (formSubmit)="onSubmit()"
+    />
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class UpdateNote implements OnInit, OnDestroy {
   notes_list = FULL_NAVIGATION_PATHS.NOTES_LIST;
 
   private notesService = inject(NotesService);
+  private noteFormService = inject(NoteFormService);
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private formBuilder = inject(FormBuilder);
-  private dateFormatter = DateFormatter;
-  formUtils = FormUtils;
 
   note = this.notesService.note;
-  noteLoading = this.notesService.loading;
   noteError = this.notesService.error;
+  noteId: number | null = null;
 
   private routeSubscription?: Subscription;
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe((params) => {
-      const noteId = params['id'];
+      this.noteId = params['id'];
 
-      if (noteId) {
+      if (this.noteId) {
         this.notesService.clearNote();
-        this.notesService.findById(+noteId);
+        this.notesService.findById(+this.noteId);
       }
     });
   }
@@ -52,53 +58,30 @@ export default class UpdateNote implements OnInit, OnDestroy {
     }
   }
 
-  myForm: FormGroup = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-    content: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(250)]],
-    date: ['', [Validators.required]],
-    priority: [
-      '',
-      [Validators.required, Validators.min(1), Validators.max(5), Validators.pattern('^[1-5]$')],
-    ],
-  });
+  myForm: FormGroup = this.noteFormService.createForm();
 
   constructor() {
     effect(() => {
       const currentNote = this.note();
       if (currentNote) {
-        this.myForm.patchValue({
-          title: currentNote.title,
-          content: currentNote.content,
-          date: this.dateFormatter.toDateInput(currentNote.date),
-          priority: currentNote.priority.toString(),
-        });
+        this.noteFormService.patchFormWithNote(this.myForm, currentNote);
       }
     });
 
     effect(() => {
       const error = this.noteError();
       if (error) {
-        this.router.navigate([FULL_NAVIGATION_PATHS.NOT_FOUND]);
+        this.noteFormService.navigateToNotFound();
       }
     });
   }
 
   onSubmit() {
-    if (this.myForm.invalid) {
-      this.myForm.markAllAsTouched();
-      return;
-    }
-
-    const formData = {
-      ...this.myForm.value,
-      priority: parseInt(this.myForm.value.priority, 10),
-    };
-
-    const noteId = this.route.snapshot.params['id'];
-    if (noteId) {
-      this.notesService.update(+noteId, formData, () => {
-        this.router.navigate([FULL_NAVIGATION_PATHS.NOTES_LIST]);
-      });
-    }
+    this.noteFormService.onSubmit(this.myForm, (formData) => {
+      if (this.noteId) {
+        this.notesService.update(+this.noteId, formData);
+        this.noteFormService.navigateToNotesList();
+      }
+    });
   }
 }
