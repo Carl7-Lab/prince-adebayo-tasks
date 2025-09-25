@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FULL_NAVIGATION_PATHS } from '../../../shared/constants/navigation-paths';
 import { Validators, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -15,6 +15,8 @@ export default class CreateNote {
 
   private formBuilder = inject(FormBuilder);
   private notesService = inject(NotesService);
+  private router = inject(Router);
+
   formUtils = FormUtils;
 
   myForm: FormGroup = this.formBuilder.group({
@@ -33,6 +35,13 @@ export default class CreateNote {
       return;
     }
 
-    this.notesService.create(this.myForm.value);
+    const formData = {
+      ...this.myForm.value,
+      priority: parseInt(this.myForm.value.priority, 10),
+    };
+
+    this.notesService.create(formData, () => {
+      this.router.navigate([FULL_NAVIGATION_PATHS.NOTES_LIST]);
+    });
   }
 }

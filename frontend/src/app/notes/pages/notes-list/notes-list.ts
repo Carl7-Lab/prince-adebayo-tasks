@@ -18,4 +18,8 @@ export default class Notes {
   ngOnInit(): void {
     this.notesService.findAll();
   }
+
+  deleteNote(id: number) {
+    this.notesService.delete(id);
+  }
 }

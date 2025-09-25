@@ -22,9 +22,9 @@ export class NotesService {
     return this.httpService.error;
   }
 
-  findAll(): void {
+  findAll() {
     this.httpService.executeRequest(
-      'loading notes',
+      'Loading decrees',
       this.http.get<Note[]>(`${environment.apiUrl}/notes`),
       (notes) => this.notes.set(notes)
     );
@@ -32,33 +32,66 @@ export class NotesService {
 
   findById(id: number): void {
     this.httpService.executeRequest(
-      'finding note',
+      'Finding decree',
       this.http.get<Note>(`${environment.apiUrl}/notes/${id}`),
-      (note) => this.note.set(note)
+      (note) => {
+        this.note.set(note);
+      }
     );
   }
 
-  create(note: Note): void {
+  create(note: Note, onSuccess?: () => void): void {
     this.httpService.executeRequest(
-      'creating note',
+      'Creating decree',
       this.http.post<Note>(`${environment.apiUrl}/notes`, note),
-      (createdNote) => this.notes.set([...this.notes(), createdNote])
+      (createdNote) => {
+        const updatedNotes = [...this.notes(), createdNote];
+        this.notes.set(this.sortNotesByPriorityAndDate(updatedNotes));
+
+        this.httpService.showSuccess(
+          'Decree created',
+          'Your decree has been created successfully.'
+        );
+
+        if (onSuccess) {
+          onSuccess();
+        }
+      }
     );
   }
 
-  update(id: number, note: Note): void {
+  update(id: number, note: Note, onSuccess?: () => void): void {
     this.httpService.executeRequest(
-      'updating note',
-      this.http.put<Note>(`${environment.apiUrl}/notes/${id}`, note),
-      (updatedNote) => this.notes.set(this.notes().map((n) => (n.id === id ? updatedNote : n)))
+      'Updating decree',
+      this.http.patch<Note>(`${environment.apiUrl}/notes/${id}`, note),
+      (updatedNote) => {
+        const updatedNotes = this.notes().map((n) => (n.id === id ? updatedNote : n));
+        this.notes.set(this.sortNotesByPriorityAndDate(updatedNotes));
+
+        this.httpService.showSuccess(
+          'Decree updated',
+          'Your decree has been updated successfully.'
+        );
+
+        if (onSuccess) {
+          onSuccess();
+        }
+      }
     );
   }
 
   delete(id: number): void {
     this.httpService.executeRequest(
-      'deleting note',
+      'Deleting decree',
       this.http.delete<Note>(`${environment.apiUrl}/notes/${id}`),
-      () => this.notes.set(this.notes().filter((n) => n.id !== id))
+      () => {
+        this.notes.set(this.notes().filter((n) => n.id !== id));
+
+        this.httpService.showSuccess(
+          'Decree deleted',
+          'Your decree has been deleted successfully.'
+        );
+      }
     );
   }
 
@@ -74,5 +107,17 @@ export class NotesService {
 
   clearError(): void {
     this.httpService.clearError();
+  }
+
+  private sortNotesByPriorityAndDate(notes: Note[]): Note[] {
+    return notes.sort((a, b) => {
+      if (a.priority !== b.priority) {
+        return b.priority - a.priority;
+      }
+
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
   }
 }

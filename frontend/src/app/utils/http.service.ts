@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { Observable, catchError, finalize, of } from 'rxjs';
+import { ToastService } from '../shared/services/toast.service';
 
 export interface HttpError {
   message: string;
@@ -11,7 +12,8 @@ export interface HttpError {
   providedIn: 'root',
 })
 export class HttpService {
-  loading = signal<boolean>(false);
+  private toastService = inject(ToastService);
+  loading = signal<boolean>(true);
   error = signal<HttpError | null>(null);
 
   private handleHttpError(operation: string, error: HttpErrorResponse): Observable<null> {
@@ -19,7 +21,15 @@ export class HttpService {
 
     let errorMessage = `Error ${operation}`;
 
-    if (error.status === 0) {
+    if (error.status === 400) {
+      errorMessage = 'Bad request';
+    } else if (error.status === 401) {
+      errorMessage = 'Unauthorized';
+    } else if (error.status === 403) {
+      errorMessage = 'Forbidden';
+    } else if (error.status === 404) {
+      errorMessage = 'Not found';
+    } else if (error.status === 0) {
       errorMessage = 'Connection error - Server not available';
     } else if (error.status >= 500) {
       errorMessage = 'Server error';
@@ -31,6 +41,7 @@ export class HttpService {
       message: errorMessage,
       status: error.status,
     });
+    this.toastService.showError(`${operation} error`, this.error()?.message || '');
     this.loading.set(false);
 
     return of(null);
@@ -38,16 +49,24 @@ export class HttpService {
 
   executeRequest<T>(operation: string, request: Observable<T>, onSuccess: (data: T) => void): void {
     this.error.set(null);
-    this.loading.set(true);
 
     request
-      .pipe(catchError((error: HttpErrorResponse) => this.handleHttpError(operation, error)))
+      .pipe(
+        catchError((error: HttpErrorResponse) => this.handleHttpError(operation, error)),
+        finalize(() => {
+          this.loading.set(false);
+        })
+      )
       .subscribe((data) => {
         if (data !== null) {
           onSuccess(data);
         }
         this.loading.set(false);
       });
+  }
+
+  showSuccess(title: string, message: string): void {
+    this.toastService.showSuccess(title, message);
   }
 
   clearError(): void {

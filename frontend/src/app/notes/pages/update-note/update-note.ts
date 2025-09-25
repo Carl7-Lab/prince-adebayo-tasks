@@ -36,8 +36,6 @@ export default class UpdateNote implements OnInit, OnDestroy {
   private routeSubscription?: Subscription;
 
   ngOnInit(): void {
-    this.loadNoteFromRoute();
-
     this.routeSubscription = this.route.params.subscribe((params) => {
       const noteId = params['id'];
 
@@ -46,14 +44,6 @@ export default class UpdateNote implements OnInit, OnDestroy {
         this.notesService.findById(+noteId);
       }
     });
-  }
-
-  private loadNoteFromRoute(): void {
-    const noteId = this.route.snapshot.params['id'];
-
-    if (noteId) {
-      this.notesService.findById(+noteId);
-    }
   }
 
   ngOnDestroy(): void {
@@ -99,6 +89,16 @@ export default class UpdateNote implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(this.myForm.value);
+    const formData = {
+      ...this.myForm.value,
+      priority: parseInt(this.myForm.value.priority, 10),
+    };
+
+    const noteId = this.route.snapshot.params['id'];
+    if (noteId) {
+      this.notesService.update(+noteId, formData, () => {
+        this.router.navigate([FULL_NAVIGATION_PATHS.NOTES_LIST]);
+      });
+    }
   }
 }

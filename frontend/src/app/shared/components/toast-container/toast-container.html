@@ -1,0 +1,5 @@
+<div class="toast-container-wrapper">
+  @for (toast of toastService.toastsList(); track toast.id) {
+  <app-toast [toastData]="toast" [onClose]="getCloseHandler(toast.id)" />
+  }
+</div>
