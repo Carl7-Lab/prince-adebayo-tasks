@@ -1,0 +1,30 @@
+<div
+  class="fixed top-0 left-0 right-0 z-50 px-2 py-3 shadow-md w-full flex justify-center"
+  style="
+    background: linear-gradient(135deg, #008751 0%, #006b42 100%);
+    box-shadow: 0 4px 15px rgba(0, 135, 81, 0.3);
+  "
+>
+  <nav class="w-full max-w-7xl flex justify-between items-center">
+    <div class="nigerian-navbar-brand">
+      <a
+        [routerLink]="notes_list"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nigerian-navbar-brand"
+        routerLinkActive="active"
+      >
+        Prince Adebayo
+      </a>
+    </div>
+    <div class="flex space-x-6">
+      <a
+        [routerLink]="note_create"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nigerian-navbar-link"
+        routerLinkActive="active"
+      >
+        Create Note
+      </a>
+    </div>
+  </nav>
+</div>

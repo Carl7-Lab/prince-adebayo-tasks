@@ -22,6 +22,8 @@ async function bootstrap(): Promise<void> {
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('The Royal To-Do List API')
     .setDescription(

@@ -66,20 +66,19 @@ cp .env.template .env
 **Required environment variables:**
 
 ```bash
-# Database Configuration
-DATABASE_URL="mysql://user:password@localhost:3306/royal_todo_db"
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=your_user
-DB_PASSWORD=your_password
-DB_NAME=royal_todo_db
-
 # Application Configuration
-NODE_ENV=development
 PORT=3000
 HOST_API=http://localhost:3000
-DEFAULT_LIMIT=10
-API_PREFIX=api/v1
+
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=royal_user
+DB_PASSWORD=royal_password_2025
+DB_NAME=royal_todo_db
+
+# Prisma Configuration
+DATABASE_URL="mysql://royal_user:royal_password_2025@localhost:3306/royal_todo_db"
 ```
 
 ### 5. Run database migrations
@@ -103,23 +102,12 @@ npm run db:up
 npm run start:dev
 ```
 
-#### In production mode:
-
-```bash
-npm run build
-npm run start:prod
-```
-
 ### 7. Available Scripts
 
 ```bash
 # Development
 npm run start:dev        # Start in development mode with watch
 npm run start:debug      # Start in debug mode
-
-# Production
-npm run build           # Build the application
-npm run start:prod      # Start in production mode
 
 # Database
 npm run db:migrate      # Run database migrations
@@ -143,43 +131,6 @@ npm run prisma:format
 # Reset database (⚠️ This will delete all data)
 npm run prisma:reset
 ```
-
-## 📡 API Endpoints
-
-Once the server is running, you can access the following endpoints:
-
-### Royal Decrees API
-
-Base URL: `http://localhost:3000/api/v1`
-
-- `GET /notes` - Get all royal decrees (ordered by priority desc, date desc)
-- `GET /notes/:id` - Get a specific decree by ID
-- `POST /notes` - Create a new royal decree
-- `PATCH /notes/:id` - Update an existing decree
-- `DELETE /notes/:id` - Remove a decree
-
-#### Royal Decree Model:
-
-```typescript
-{
-  id: number;
-  title: string; // 5-100 characters (beware palindromes!)
-  content: string; // 10-500 characters
-  date: Date; // ISO date string (check for inauspicious dates)
-  priority: number; // 1-5 (1=low, 5=high)
-  createdAt: Date; // Auto-generated
-  updatedAt: Date; // Auto-generated
-}
-```
-
-#### Royal Business Logic:
-
-1. **Inauspicious Dates**: Dates whose digits sum to prime numbers are rejected
-2. **Days of Celebration**: Nigerian national holidays are blocked
-3. **Palindrome Curse**: Titles that are palindromes trigger automatic deletion after confirmation
-4. **The Great Reset**: All decrees are cleared every minute, with database index refresh on prime minutes
-
-### Documentation
 
 - `GET /docs` - API Documentation (Swagger)
 
@@ -205,11 +156,6 @@ src/
 ├── config/               # Configuration
 │   ├── app.config.ts
 │   └── joi.validation.ts
-├── common/               # Shared utilities
-│   ├── adapters/         # HTTP adapters
-│   ├── dto/              # Common DTOs
-│   ├── interfaces/       # Common interfaces
-│   └── common.module.ts
 └── prisma-client-exception.filter.ts  # Prisma exception filter
 ```
 
@@ -243,7 +189,6 @@ src/
 ### API & Documentation
 
 - **Swagger/OpenAPI** - Auto-generated API documentation at `/docs`
-- **Axios v1.11.0** - HTTP client for external API calls
 
 ### Development Tools
 
@@ -251,33 +196,6 @@ src/
 - **Prettier** - Code formatting
 - **ts-node** - TypeScript execution
 - **dotenv-cli** - Environment variable management
-
-## 🗄️ Database Schema
-
-The application uses a simple but effective database schema:
-
-### Note Model
-
-```sql
-CREATE TABLE notes (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(100) NOT NULL,
-  content TEXT NOT NULL,
-  date DATETIME NOT NULL,
-  priority INT NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-```
-
-### Key Features:
-
-- **Auto-incrementing ID**: Primary key with automatic generation
-- **Title Validation**: 5-100 character limit
-- **Content Validation**: 10-500 character limit
-- **Priority System**: 1-5 scale (1=low priority, 5=high priority)
-- **Date Tracking**: Custom date field for note scheduling
-- **Timestamps**: Automatic creation and update tracking
 
 ## 📝 Important Notes
 
@@ -354,11 +272,3 @@ This API implements sophisticated business logic as specified in the Royal Tech 
 - **Rule**: Every minute, all tasks are automatically cleared
 - **Prime Minute Enhancement**: When current minute is prime, database indexes are refreshed
 - **Implementation**: Cron job with minute-based scheduling and prime number detection
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request

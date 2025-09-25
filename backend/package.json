@@ -15,7 +15,6 @@
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "prisma:format": "prisma format",
     "prisma:reset": "prisma migrate reset --force",
-    "prisma:migrate:dev": "prisma migrate dev",
     "db:migrate": "prisma migrate dev",
     "db:up": "docker compose up db -d"
   },

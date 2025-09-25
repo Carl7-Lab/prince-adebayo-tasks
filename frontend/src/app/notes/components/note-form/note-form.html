@@ -1,0 +1,116 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-8">
+    <h1 class="nigerian-title">{{ pageTitle() }}</h1>
+    <div class="nigerian-flag-stripe"></div>
+    <p class="nigerian-body mt-4">{{ pageSubtitle() }}</p>
+  </div>
+
+  <section class="max-w-2xl mx-auto">
+    <div class="card">
+      <h2 class="nigerian-subtitle mb-6">Royal Decree Form</h2>
+
+      <form class="space-y-6" [formGroup]="form()" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="title" class="nigerian-label">Decree Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            formControlName="title"
+            class="nigerian-input w-full"
+            placeholder="Enter the title of your royal decree"
+            required
+          />
+
+          @if (formUtils.isValidField(form(), 'title')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'title') }}</span>
+          }
+        </div>
+
+        <div>
+          <label for="content" class="nigerian-label">Decree Content</label>
+          <textarea
+            id="content"
+            name="content"
+            formControlName="content"
+            class="nigerian-textarea w-full"
+            placeholder="Describe the details of your royal decree"
+            rows="3"
+            required
+          ></textarea>
+
+          @if (formUtils.isValidField(form(), 'content')) {
+          <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'content') }}</span>
+          }
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="date" class="nigerian-label">Effective Date</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              formControlName="date"
+              class="nigerian-input w-full"
+              required
+            />
+
+            @if (formUtils.isValidField(form(), 'date')) {
+            <span class="nigerian-text-danger">{{ formUtils.getFieldError(form(), 'date') }}</span>
+            }
+          </div>
+
+          <div>
+            <label for="priority" class="nigerian-label">Priority Level</label>
+            <select
+              id="priority"
+              name="priority"
+              formControlName="priority"
+              class="nigerian-input w-full"
+              required
+            >
+              <option value="">Select Priority</option>
+              <option value="5">5 - Highest Priority (Urgent Royal Matter)</option>
+              <option value="4">4 - High Priority (Important Royal Business)</option>
+              <option value="3">3 - Medium Priority (Standard Royal Affairs)</option>
+              <option value="2">2 - Low Priority (Minor Royal Tasks)</option>
+              <option value="1">1 - Lowest Priority (Leisure Royal Activities)</option>
+            </select>
+
+            @if (formUtils.isValidField(form(), 'priority')) {
+            <span class="nigerian-text-danger">{{
+              formUtils.getFieldError(form(), 'priority')
+            }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+          <div class="flex">
+            <div class="ml-3">
+              <p class="nigerian-body text-sm text-yellow-700">
+                <strong>Royal Notice:</strong> Please ensure all information is accurate before
+                issuing your decree. Remember the royal superstitions about inauspicious dates and
+                palindrome curses.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-center space-x-4">
+          <button type="button" class="btn-secondary" [routerLink]="cancelRoute()">Cancel</button>
+          <button
+            type="submit"
+            class="btn-primary nigerian-glow"
+            [disabled]="isSubmitBlocked()"
+            [class.opacity-50]="isSubmitBlocked()"
+            [class.cursor-not-allowed]="isSubmitBlocked()"
+          >
+            {{ isSubmitBlocked() ? 'Processing...' : submitButtonText() }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
