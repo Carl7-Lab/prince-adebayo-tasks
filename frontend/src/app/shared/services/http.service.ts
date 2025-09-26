@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, catchError, finalize, of } from 'rxjs';
-import { ToastService } from '../shared/services/toast.service';
+import { ToastService } from './toast.service';
 
 export interface HttpError {
   message: string;

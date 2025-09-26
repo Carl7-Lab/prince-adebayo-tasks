@@ -10,7 +10,18 @@
       <h2 class="nigerian-heading text-center mb-8">Royal Decrees</h2>
 
       <div class="grid gap-4">
-        @for (note of notesService.notes(); track note.id) {
+        @if (notesService.notes().length === 0) {
+        <div class="text-center py-12">
+          <div class="text-6xl mb-4">📝</div>
+          <h3 class="nigerian-heading text-xl mb-2">No Royal Decrees Yet</h3>
+          <p class="nigerian-body text-gray-600">
+            His Royal Highness has no pending tasks at the moment.
+          </p>
+          <p class="nigerian-body text-sm text-gray-500 mt-2">
+            Create your first royal decree to get started!
+          </p>
+        </div>
+        } @else { @for (note of notesService.notes(); track note.id) {
         <div class="card">
           <div class="flex justify-between items-start gap-2">
             <div>
@@ -34,7 +45,7 @@
             </div>
           </div>
         </div>
-        }
+        } }
       </div>
     </section>
   </div>
