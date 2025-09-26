@@ -1,274 +1,318 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# The Royal To-Do List API
 
-# 🏰 The Royal To-Do List API - NestJS Project
+A world-class task management application for His Royal Highness, Prince Adebayo of Nigeria. This backend implements sophisticated business logic including inauspicious date detection, palindrome curse handling, and automatic resets with database optimization.
 
-**A prestigious digital task manager for His Royal Highness, Prince Adebayo of Nigeria**
+## 🏛️ Project Overview
 
-This is a sophisticated REST API project developed with NestJS to manage royal decrees and tasks with a MySQL database using Prisma ORM. The application serves as a modern replacement for the traditional parchment-and-quill system, providing full CRUD operations for notes with advanced business logic including inauspicious date detection, palindrome curse handling, and automatic resets.
+This backend is built with **NestJS** and **TypeScript**, implementing a modular and scalable architecture to manage Prince Adebayo's royal tasks. The application includes:
 
-## 👑 Royal Context
+- **Complete REST API** with Swagger documentation
+- **WebSockets** for real-time notifications
+- **Sophisticated validations** for dates (Nigerian holidays and inauspicious dates)
+- **Automatic reset system** with advanced mathematical logic
+- **MySQL database** with Prisma ORM
+- **Robust logging** and error handling system
 
-This application was commissioned by The Royal Tech Consortium to serve Prince Adebayo's specific needs and superstitions, including:
+## 🏗️ Architectural Decisions
 
-- **Inauspicious Date Detection**: Rejects dates whose digits sum to prime numbers
-- **Days of Celebration**: Prevents scheduling on Nigerian national holidays
-- **Palindrome Curse**: Handles cursed palindromic titles with automatic deletion
-- **The Great Reset**: Automatic clearing every minute with index refresh on prime minutes
+### Modular Architecture
 
-## 📋 Prerequisites
+- **Independent modules**: `NotesModule`, `EventModule`, `PrismaModule`
+- **Separation of concerns**: Controllers, Services, DTOs, Entities
+- **Native dependency injection** from NestJS
+- **Centralized configuration** with Joi validation
 
-Before serving His Royal Highness, ensure you have installed:
+### Implemented Design Patterns
 
-- **Node.js** (version 20.15.1 or higher) - The chosen TypeScript runtime
-- **npm** (version 10.7.0 or higher)
-- **Docker** and **Docker Compose** (for MySQL database)
-- **Git** (for version control)
+- **Repository Pattern**: PrismaService as data abstraction layer
+- **Gateway Pattern**: EventGateway for WebSockets
+- **DTO Pattern**: Data validation and transformation
+- **Filter Pattern**: Global Prisma exception handling
 
-## 🚀 Installation and Setup
+### Specialized Business Logic
 
-### 1. Clone the repository
+- **Inauspicious date validation**: Sum of date digits cannot be a prime number
+- **Nigerian holiday validation**: National holidays database
+- **Automatic reset system**: Every minute with conditional optimization
+- **Real-time notifications**: WebSocket for system events
+
+## 🚀 Runtime Justification: Node.js + NestJS
+
+### Why Node.js?
+
+1. **I/O Performance**: Excellent for database operations and WebSockets
+2. **Mature ecosystem**: NPM with over 2 million packages
+3. **JavaScript/TypeScript**: Single language for frontend and backend
+4. **Scalability**: Efficient handling of concurrent connections
+5. **Active community**: Continuous support and regular updates
+
+### Why NestJS?
+
+1. **Scalable architecture**: Based on decorators and modules
+2. **Native TypeScript**: Strong typing and autocompletion
+3. **Integrated ecosystem**: Swagger, WebSockets, Scheduling, Validation
+4. **Enterprise patterns**: Dependency injection, interceptors, guards
+5. **Excellent documentation**: Complete guides and practical examples
+
+### Complete Technology Stack
+
+- **Runtime**: Node.js 18+ (JavaScript V8 Engine)
+- **Framework**: NestJS 11.x (Progressive Node.js Framework)
+- **ORM**: Prisma 6.x (Next-generation ORM)
+- **Database**: MySQL 8.0 (Relational Database)
+- **WebSockets**: Socket.io (Real-time communication)
+- **Validation**: Joi + Class-validator (Schema validation)
+- **Documentation**: Swagger/OpenAPI (API documentation)
+
+## 🛠️ Build and Run Instructions
+
+### Prerequisites
 
 ```bash
-git clone <repository-url>
-cd prince-adebayo-tasks
+# Node.js 18+ and npm
+node --version  # v18.0.0+
+npm --version   # 9.0.0+
+
+# Docker and Docker Compose
+docker --version
+docker-compose --version
 ```
 
-### 2. Install dependencies
+### 1. Clone and Configure the Project
 
 ```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
 npm install
+
+# Install Prisma CLI globally (optional)
+npm install -g prisma
 ```
 
-### 3. Configure MySQL database
+### 2. Configure Environment Variables
 
-The project includes a `docker-compose.yml` file that automatically configures MySQL. Run:
-
-```bash
-docker compose up -d
-```
-
-This will start MySQL on port 3306 with the following configuration:
-
-- Database name: `royal_todo_db`
-- Container name: `royal-todo-db`
-- MySQL 8.0 with native password authentication
-
-### 4. Configure environment variables
-
-Copy the `.env.template` file and rename the copy to `.env`:
+Copy the template file and configure variables:
 
 ```bash
+# Copy the template file
 cp .env.template .env
+
+# Edit variables according to your configuration
+nano .env  # or use your preferred editor
 ```
 
-**Required environment variables:**
+The `.env.template` file contains:
 
-```bash
-# Application Configuration
+```env
 PORT=3000
 HOST_API=http://localhost:3000
 
-# Database Configuration
+# Database
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=royal_user
 DB_PASSWORD=royal_password_2025
 DB_NAME=royal_todo_db
 
-# Prisma Configuration
+# Prisma
 DATABASE_URL="mysql://royal_user:royal_password_2025@localhost:3306/royal_todo_db"
 ```
 
-### 5. Run database migrations
+**Note**: Adjust values according to your local configuration, especially database credentials.
+
+### 3. Configure Database
 
 ```bash
-# Generate Prisma client
-npx prisma generate
+# Start MySQL with Docker
+npm run db:up
 
-# Run database migrations
+# Wait for MySQL to be ready (30-60 seconds)
+# Verify connection
+docker logs royal-todo-db
+
+# Run Prisma migrations
 npm run db:migrate
 
-# Start the database (if not already running)
-npm run db:up
-```
-
-### 6. Run the project
-
-#### In development mode:
-
-```bash
-npm run start:dev
-```
-
-### 7. Available Scripts
-
-```bash
-# Development
-npm run start:dev        # Start in development mode with watch
-npm run start:debug      # Start in debug mode
-
-# Database
-npm run db:migrate      # Run database migrations
-npm run db:up          # Start MySQL database container
-npm run prisma:reset   # Reset database (⚠️ destructive)
-
-# Code Quality
-npm run lint           # Run ESLint
-npm run format         # Format code with Prettier
-```
-
-### 8. Database Management
-
-```bash
-# View database in Prisma Studio
-npx prisma studio
-
-# Format Prisma schema
-npm run prisma:format
-
-# Reset database (⚠️ This will delete all data)
+# (Optional) Reset database
 npm run prisma:reset
 ```
 
-- `GET /docs` - API Documentation (Swagger)
+### 4. Run the Application
 
-## 📁 Project Structure
+#### Development
 
-```
-src/
-├── app.module.ts          # Main application module
-├── main.ts               # Application entry point
-├── notes/                # Notes module
-│   ├── dto/              # Data Transfer Objects
-│   │   ├── create-note.dto.ts
-│   │   ├── update-note.dto.ts
-│   │   └── index.ts
-│   ├── entities/          # Swagger/API entities
-│   │   └── note.entity.ts
-│   ├── notes.controller.ts
-│   ├── notes.module.ts
-│   └── notes.service.ts
-├── prisma/               # Prisma service
-│   ├── prisma.module.ts
-│   └── prisma.service.ts
-├── config/               # Configuration
-│   ├── app.config.ts
-│   └── joi.validation.ts
-└── prisma-client-exception.filter.ts  # Prisma exception filter
+```bash
+# Development mode with hot-reload
+npm run start:dev
+
+# Debug mode with breakpoints
+npm run start:debug
 ```
 
-## 🛠️ Royal Technology Stack
+#### Production
 
-### Core Framework & Language
+```bash
+# Build the application
+npm run build
 
-- **NestJS v11.0.1** - Modern Node.js framework with TypeScript (chosen for its enterprise-grade architecture)
-- **TypeScript v5.7.3** - Type-safe JavaScript with advanced features
-- **Node.js v20.15.1+** - Runtime environment (chosen for its maturity, ecosystem, and performance)
+# Run in production
+npm run start:prod
+```
 
-### Database & ORM
+### 5. Verify the Application
 
-- **MySQL v8.0** - Robust relational database with native password authentication (as specified in requirements)
-- **Prisma v6.12.0** - Next-generation ORM with type safety and automated migrations
-- **Docker & Docker Compose** - Containerized MySQL database setup for royal portability
+```bash
+# REST API
+curl http://localhost:3000/api/v1/notes
 
-### Development & Build Tools
+# Swagger documentation
+open http://localhost:3000/docs
 
-- **SWC v1.10.7** - Ultra-fast TypeScript/JavaScript compiler
-- **ESLint** - Code linting and formatting
-- **Prettier** - Code formatting
-- **TypeScript v5.7.3** - Type-safe JavaScript
+# WebSocket (using wscat)
+npm install -g wscat
+wscat -c ws://localhost:3000/royal-todo
+```
 
-### API & Validation
+## 🐛 Debugging Instructions
 
-- **class-validator v0.14.2** - Input validation and DTOs
-- **class-transformer v0.5.1** - Object transformation
-- **Joi v17.13.3** - Environment configuration validation
+```bash
+# Run in debug mode
+npm run start:debug
 
-### API & Documentation
+# Connect debugger in VS Code
+# Create .vscode/launch.json:
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug NestJS",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "protocol": "inspector"
+    }
+  ]
+}
+```
 
-- **Swagger/OpenAPI** - Auto-generated API documentation at `/docs`
+## 📊 Project Estructure
 
-### Development Tools
+```
+backend/
+├── src/
+│   ├── app.module.ts              # Main module
+│   ├── main.ts                    # Entry point
+│   ├── config/                    # Configuration
+│   │   ├── app.config.ts         # Environment variables
+│   │   └── joi.validation.ts     # Schema validation
+│   ├── notes/                     # Notes module
+│   │   ├── dto/                   # Data Transfer Objects
+│   │   ├── entities/              # Response entities
+│   │   ├── notes.controller.ts   # REST Controller
+│   │   ├── notes.service.ts      # Business logic
+│   │   └── notes.module.ts       # Notes module
+│   ├── event/                     # Events module
+│   │   ├── event.gateway.ts      # WebSocket Gateway
+│   │   ├── event.service.ts      # Event service
+│   │   └── event.module.ts       # Events module
+│   ├── prisma/                    # Database module
+│   │   ├── prisma.service.ts     # Prisma service
+│   │   └── prisma.module.ts      # Prisma module
+│   └── prisma-client-exception.filter.ts # Exception filter
+├── prisma/
+│   ├── schema.prisma             # Database schema
+│   ├── holidays.ts               # Nigerian holidays data
+│   └── migrations/               # DB migrations
+├── docker-compose.yml            # Docker configuration
+├── package.json                  # Dependencies and scripts
+└── README.md                     # This file
+```
 
-- **ESLint** - Code linting and formatting
-- **Prettier** - Code formatting
-- **ts-node** - TypeScript execution
-- **dotenv-cli** - Environment variable management
+## 🔧 Available Scripts
 
-## 📝 Important Notes
+```bash
+# Development
+npm run start:dev          # Development with hot-reload
+npm run start:debug        # Development with debugger
 
-### Database & Infrastructure
+# Production
+npm run build              # Build application
+npm run start:prod         # Run in production
 
-- **MySQL 8.0**: Primary database with Docker containerization
-- **Prisma ORM**: Modern database toolkit with type-safe queries and migrations
-- **Docker Compose**: Automated MySQL database setup with persistent volumes
-- **Connection Management**: Automatic connection handling with lifecycle hooks
+# Database
+npm run db:up              # Start MySQL with Docker
+npm run db:migrate         # Run migrations
+npm run prisma:reset       # Reset database
+npm run prisma:format      # Format Prisma schema
 
-### API & Validation
+# Code quality
+npm run lint               # Run ESLint
+npm run format             # Format with Prettier
+```
 
-- **Input Validation**: Comprehensive validation with class-validator for all DTOs
-- **Object Transformation**: Data transformation with class-transformer for API responses
-- **Error Handling**: Custom Prisma exception filter for consistent error responses
+## 🌐 API Endpoints
 
-### Development & Code Quality
+### REST API (http://localhost:3000/api/v1)
 
-- **TypeScript**: Full type safety throughout the royal application
-- **API Documentation**: Auto-generated Swagger documentation at `/docs`
-- **Error Handling**: Custom Prisma exception filters for consistent royal error responses
-- **Code Formatting**: ESLint and Prettier for consistent royal code style
-- **Environment Validation**: Joi schema validation for royal configuration
-- **Royal Business Logic**: Sophisticated validation and processing rules
+- `GET /notes` - Get all notes
+- `POST /notes` - Create new note
+- `GET /notes/:id` - Get note by ID
+- `PATCH /notes/:id` - Update note
+- `DELETE /notes/:id` - Delete note
+- `POST /notes/reset` - Manual notes reset
 
-### Royal Environment Configuration
+### WebSocket (ws://localhost:3000/royal-todo)
 
-- **Development**: `.env` file for local royal development
-- **Production**: Environment variables for royal deployment
-- **Database**: Configurable MySQL connection with Docker support
-- **Royal Settings**: Configurable business logic parameters for royal requirements
+- `connection` - Connection event
+- `great_reset` - Automatic reset notification
+- `message` - Custom message
 
-### Royal Features
+### Documentation
 
-- **Modular Architecture**: Clean separation of concerns with NestJS modules
-- **Royal Decree Management**: Full CRUD operations with priority and date management
-- **Type Safety**: End-to-end TypeScript with Prisma-generated types
-- **API Documentation**: Interactive Swagger UI at `/docs` for testing royal endpoints
-- **Database Management**: Prisma Studio for visual database management
-- **Docker Integration**: Containerized MySQL database for easy royal setup
-- **Royal Validation**: Comprehensive input validation with custom error messages
-- **Business Logic**: Sophisticated royal rules including:
-  - Inauspicious date detection (prime number digit sums)
-  - Nigerian holiday blocking
-  - Palindrome curse handling with automatic deletion
-  - Automatic minute-based resets with index refresh
-- **Error Handling**: Custom Prisma exception filters for royal error responses
+- Swagger UI: http://localhost:3000/docs
 
-## 👑 Royal Business Logic Implementation
+## 🚨 Common Troubleshooting
 
-This API implements sophisticated business logic as specified in the Royal Tech Consortium requirements:
+### Database connection error
 
-### 🔮 Inauspicious Date Detection
+```bash
+# Verify MySQL is running
+docker ps | grep royal-todo-db
 
-- **Rule**: Dates whose digits sum to prime numbers are considered unlucky
-- **Example**: 2025-09-22 → 2+0+2+5+0+9+2+2 = 22 (not prime) ✅
-- **Example**: 2025-09-23 → 2+0+2+5+0+9+2+3 = 23 (prime) ❌
-- **Implementation**: Custom validation decorator with prime number checking
+# Restart container
+docker restart royal-todo-db
 
-### 🎉 Days of Celebration
+# Verify environment variables
+echo $DATABASE_URL
+```
 
-- **Rule**: Nigerian national holidays are blocked for task scheduling
-- **Implementation**: Holiday validation service with configurable holiday list
-- **Holidays**: New Year's Day, Independence Day, Christmas, etc.
+### Migration errors
 
-### 🔮 Palindrome Curse
+```bash
+# Reset migrations
+npm run prisma:reset
 
-- **Rule**: Titles that are palindromes trigger automatic deletion after confirmation
-- **Example**: "racecar", "level", "madam" → Cursed titles
-- **Implementation**: Palindrome detection with confirmation toast and delayed deletion
+# Regenerate Prisma client
+npx prisma generate
+```
 
-### ⏰ The Great Reset
+### WebSocket errors
 
-- **Rule**: Every minute, all tasks are automatically cleared
-- **Prime Minute Enhancement**: When current minute is prime, database indexes are refreshed
-- **Implementation**: Cron job with minute-based scheduling and prime number detection
+```bash
+# Verify port 3000
+lsof -i :3000
+
+# Verify CORS in event.gateway.ts
+```
+
+### Validation errors
+
+```bash
+# Verify Joi schema
+# Check required environment variables
+```
+
+---
