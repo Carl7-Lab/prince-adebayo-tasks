@@ -150,7 +150,7 @@
 /* ===== NIGERIAN TYPOGRAPHY ===== */
 .nigerian-title {
   font-family: var(--font-elegant);
-  font-size: 2.8rem;
+  font-size: 1.8rem; /* Mobile first - smaller on mobile */
   font-weight: 600;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   color: var(--nigerian-green);
@@ -159,7 +159,7 @@
 
 .nigerian-subtitle {
   font-family: var(--font-elegant);
-  font-size: 1.6rem;
+  font-size: 1.2rem; /* Mobile first - smaller on mobile */
   font-weight: 500;
   color: var(--nigerian-green);
   letter-spacing: 0.3px;
@@ -167,7 +167,7 @@
 
 .nigerian-heading {
   font-family: var(--font-royal);
-  font-size: 1.4rem;
+  font-size: 1.1rem; /* Mobile first - smaller on mobile */
   font-weight: 700;
   color: var(--nigerian-green);
   letter-spacing: 0.2px;
@@ -175,17 +175,94 @@
 
 .nigerian-body {
   font-family: var(--font-classic);
-  font-size: 1.1rem;
+  font-size: 0.95rem; /* Mobile first - smaller on mobile */
   line-height: 1.6;
   color: var(--nigerian-text);
 }
 
 .nigerian-script {
   font-family: var(--font-script);
-  font-size: 2.2rem;
+  font-size: 1.6rem; /* Mobile first - smaller on mobile */
   font-weight: 400;
   color: var(--nigerian-green);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+/* Small mobile screens (375px and below) */
+@media (max-width: 375px) {
+  .nigerian-title {
+    font-size: 1.6rem;
+  }
+  .nigerian-subtitle {
+    font-size: 1.1rem;
+  }
+  .nigerian-heading {
+    font-size: 1rem;
+  }
+  .nigerian-body {
+    font-size: 0.9rem;
+  }
+  .nigerian-script {
+    font-size: 1.4rem;
+  }
+}
+
+/* Mobile M and L (425px) */
+@media (min-width: 376px) and (max-width: 425px) {
+  .nigerian-title {
+    font-size: 1.8rem;
+  }
+  .nigerian-subtitle {
+    font-size: 1.2rem;
+  }
+  .nigerian-heading {
+    font-size: 1.1rem;
+  }
+  .nigerian-body {
+    font-size: 0.95rem;
+  }
+  .nigerian-script {
+    font-size: 1.6rem;
+  }
+}
+
+/* Tablet (768px) */
+@media (min-width: 426px) and (max-width: 1023px) {
+  .nigerian-title {
+    font-size: 2.2rem;
+  }
+  .nigerian-subtitle {
+    font-size: 1.4rem;
+  }
+  .nigerian-heading {
+    font-size: 1.3rem;
+  }
+  .nigerian-body {
+    font-size: 1.05rem;
+  }
+  .nigerian-script {
+    font-size: 1.8rem;
+  }
+}
+
+/* Laptop and larger (1024px+) */
+@media (min-width: 1024px) {
+  .nigerian-title {
+    font-size: 2.8rem;
+  }
+  .nigerian-subtitle {
+    font-size: 1.6rem;
+  }
+  .nigerian-heading {
+    font-size: 1.4rem;
+  }
+  .nigerian-body {
+    font-size: 1.1rem;
+  }
+  .nigerian-script {
+    font-size: 2.2rem;
+  }
 }
 
 .nigerian-text-danger {
@@ -519,6 +596,62 @@
 
 .toast-container.removing {
   animation: slideOutRight 0.3s ease-in forwards;
+}
+
+/* ===== RESPONSIVE BUTTON IMPROVEMENTS ===== */
+/* Small screen button improvements (320px-425px) */
+@media (max-width: 640px) {
+  .nigerian-navbar-link {
+    padding: 0.5rem;
+    min-width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.75rem 1rem;
+    min-width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-primary span,
+  .btn-secondary span {
+    font-size: 1.2rem;
+  }
+
+  /* Card button improvements for small screens */
+  .btn-secondary-icon,
+  .btn-danger-icon {
+    padding: 0.5rem;
+    min-width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-secondary-icon span,
+  .btn-danger-icon span {
+    font-size: 1.1rem;
+  }
+
+  /* Card responsive improvements for small screens */
+  .card {
+    margin: 0 auto;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* Ensure cards don't overflow on very small screens */
+  @media (max-width: 425px) {
+    .card {
+      margin: 0 0.5rem;
+      max-width: calc(100% - 1rem);
+    }
+  }
 }
 
 /* Responsive adjustments */

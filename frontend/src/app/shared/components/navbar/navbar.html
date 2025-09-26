@@ -16,6 +16,17 @@
         Prince Adebayo
       </a>
     </div>
+
+    <div class="flex items-center gap-3">
+      <div
+        class="connection-indicator flex items-center gap-2 px-3 py-1 rounded-full"
+        [class]="connectionIndicatorClasses()"
+      >
+        <span class="connection-icon text-lg" [class]="connectionIconClasses()">{{
+          connectionIcon()
+        }}</span>
+      </div>
+    </div>
     <div class="flex space-x-6">
       <a
         [routerLink]="note_create"
@@ -23,7 +34,8 @@
         class="nigerian-navbar-link"
         routerLinkActive="active"
       >
-        Create Note
+        <span class="hidden sm:inline">Create Note</span>
+        <span class="sm:hidden">📝</span>
       </a>
     </div>
   </nav>

@@ -2,15 +2,23 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { CreateNoteDto, UpdateNoteDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Note, Prisma } from '@prisma/client';
 import { nigeriaHolidays } from '../../prisma/holidays';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { EventGateway } from '../event/event.gateway';
 
 @Injectable()
 export class NotesService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(NotesService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventGateway: EventGateway,
+  ) {}
 
   async create(dto: CreateNoteDto): Promise<Note> {
     this.validateInauspiciousDate(dto.date);
@@ -79,6 +87,9 @@ export class NotesService {
 
     if (isPrime) {
       await this.prisma.$executeRawUnsafe(`TRUNCATE TABLE notes`);
+      this.logger.log(
+        `Database reseted and indexes optimized (minute ${minute} is prime).`,
+      );
       return {
         status: 'success',
         action: 'reset_and_optimize',
@@ -86,11 +97,19 @@ export class NotesService {
       };
     }
 
+    this.logger.log(`Database reseted (minute ${minute} is not prime).`);
     return {
       status: 'success',
       action: 'reset_only',
       message: `Database reseted (minute ${minute} is not prime).`,
     };
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleCron(): Promise<void> {
+    const resetResult = await this.resetNotes();
+
+    this.eventGateway.sendGreatResetNotification(resetResult);
   }
 
   private validateHolidayDate(dateString: string): void {

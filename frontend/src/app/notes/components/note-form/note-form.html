@@ -44,7 +44,7 @@
           }
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label for="date" class="nigerian-label">Effective Date</label>
             <input
@@ -86,20 +86,11 @@
           </div>
         </div>
 
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-          <div class="flex">
-            <div class="ml-3">
-              <p class="nigerian-body text-sm text-yellow-700">
-                <strong>Royal Notice:</strong> Please ensure all information is accurate before
-                issuing your decree. Remember the royal superstitions about inauspicious dates and
-                palindrome curses.
-              </p>
-            </div>
-          </div>
-        </div>
-
         <div class="flex justify-center space-x-4">
-          <button type="button" class="btn-secondary" [routerLink]="cancelRoute()">Cancel</button>
+          <button type="button" class="btn-secondary" [routerLink]="cancelRoute()">
+            <span class="hidden sm:inline md:hidden lg:inline">Cancel</span>
+            <span class="sm:hidden md:inline lg:hidden">❌</span>
+          </button>
           <button
             type="submit"
             class="btn-primary nigerian-glow"
@@ -107,7 +98,10 @@
             [class.opacity-50]="isSubmitBlocked()"
             [class.cursor-not-allowed]="isSubmitBlocked()"
           >
-            {{ isSubmitBlocked() ? 'Processing...' : submitButtonText() }}
+            <span class="hidden sm:inline md:hidden lg:inline">{{
+              isSubmitBlocked() ? 'Processing...' : submitButtonText()
+            }}</span>
+            <span class="sm:hidden md:inline lg:hidden">{{ isSubmitBlocked() ? '⏳' : '👑' }}</span>
           </button>
         </div>
       </form>
