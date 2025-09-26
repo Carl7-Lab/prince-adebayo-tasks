@@ -22,7 +22,7 @@ export class HttpService {
     let errorMessage = `Error ${operation}`;
 
     if (error.status === 400) {
-      errorMessage = 'Bad request';
+      errorMessage = 'Bad request, probably the date is holyday or inauspicious date';
     } else if (error.status === 404) {
       errorMessage = 'Not found';
     } else if (error.status === 0) {
