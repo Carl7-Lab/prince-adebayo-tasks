@@ -4,6 +4,7 @@ import { io, Socket } from 'socket.io-client';
 import { environment } from '@/environments/environment';
 import { ToastService } from './toast.service';
 import { SoundService } from './sound.service';
+import { NotesService } from 'src/app/notes/services/notes';
 
 export interface WebSocketMessage {
   type: string;
@@ -40,6 +41,7 @@ export class WebSocketService {
   private greatReset$ = new Subject<GreatResetNotification>();
   toastService = inject(ToastService);
   soundService = inject(SoundService);
+  notesService = inject(NotesService);
 
   constructor() {
     this.initializeConnection();
@@ -113,6 +115,7 @@ export class WebSocketService {
       const { action, message, minute } = notification.data;
 
       this.soundService.playGreatResetSound(action);
+      this.notesService.clearNotes();
 
       if (action === 'reset_and_optimize') {
         this.toastService.showAlert(

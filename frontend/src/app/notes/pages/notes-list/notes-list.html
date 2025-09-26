@@ -1,7 +1,13 @@
 <div class="container mx-auto px-4 py-0 flex flex-col md:flex-row gap-x-4">
-  <router-outlet />
+  <div class=" {{ currentRoute() === navigationPaths.NOTES_LIST ? '' : 'flex-3/5' }}">
+    <router-outlet />
+  </div>
 
-  <div class="text-center mb-8 flex-1 px-4 py-8">
+  <div
+    class="text-center mb-8 {{
+      currentRoute() === navigationPaths.NOTES_LIST ? 'flex-1' : 'flex-2/5'
+    }} px-4 py-8"
+  >
     <h1 class="nigerian-title">A Royal To-Do List</h1>
     <div class="nigerian-flag-stripe"></div>
     <p class="nigerian-body mt-4">His Royal Highness Prince Adebayo's Personal Task Manager</p>
@@ -23,25 +29,31 @@
         </div>
         } @else { @for (note of notesService.notes(); track note.id) {
         <div class="card">
-          <div class="flex justify-between items-start gap-2">
-            <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+            <div class="flex-1 min-w-0">
               <h3 class="nigerian-heading">{{ note.title }}</h3>
-              <p class="nigerian-body">{{ note.content }}</p>
-              <div class="flex items-center space-x-4 mt-2">
+              <p class="nigerian-body break-words">{{ note.content }}</p>
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:px-8 gap-2 sm:gap-4 mt-2"
+              >
                 <span class="nigerian-label text-sm"
                   >Date: {{ dateFormatter.toDisplayDate(note.date) }}</span
                 >
                 <span class="nigerian-label text-sm">Priority: {{ note.priority }}</span>
               </div>
             </div>
-            <div class="flex space-x-2">
+            <div class="flex justify-end sm:justify-start space-x-2 flex-shrink-0">
               <button
                 class="btn-secondary-icon text-sm"
                 [routerLink]="[navigationPaths.NOTES_UPDATE + note.id]"
               >
-                Edit
+                <span class="hidden sm:inline">Edit</span>
+                <span class="sm:hidden">✏️</span>
               </button>
-              <button class="btn-danger-icon text-sm" (click)="deleteNote(note.id)">Delete</button>
+              <button class="btn-danger-icon text-sm" (click)="deleteNote(note.id)">
+                <span class="hidden sm:inline">Delete</span>
+                <span class="sm:hidden">🗑️</span>
+              </button>
             </div>
           </div>
         </div>
